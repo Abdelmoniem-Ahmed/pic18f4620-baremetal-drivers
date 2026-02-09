@@ -24,3 +24,4 @@ The display is configured using GPIO pin mappings for each segment.
 - Only numeric digits are supported.
 - Multiplexing is not implemented.
 - Timing control must be handled by the application if required.
+
