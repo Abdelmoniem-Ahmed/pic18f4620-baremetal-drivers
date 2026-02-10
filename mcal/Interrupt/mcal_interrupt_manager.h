@@ -82,65 +82,66 @@ void RB7_ISR(uint8 source);
  * ----------------------------------------------------
  */
 
+/*---------- until implemented will be commented ----------*/
+
 /**
  * @brief ISR for Analog-to-Digital Converter (ADC)
  */
 void ADC_ISR(void);
 
-/**
- * @brief ISR for Timer0 overflow interrupt
- */
-void TMR0_ISR(void);
-
-/**
- * @brief ISR for Timer1 overflow interrupt
- */
-void TMR1_ISR(void);
-
-/**
- * @brief ISR for Timer2 overflow interrupt
- */
-void TMR2_ISR(void);
-
-/**
- * @brief ISR for Timer3 overflow interrupt
- */
-void TMR3_ISR(void);
-
-/**
- * @brief ISR for Capture/Compare/PWM module CCP1
- */
-void CCP1_ISR(void);
-
-/**
- * @brief ISR for Capture/Compare/PWM module CCP2
- */
-void CCP2_ISR(void);
-
-/**
- * @brief ISR for EUSART transmit interrupt
- */
-void EUSART_TX_ISR(void);
-
-/**
- * @brief ISR for EUSART receive interrupt
- */
-void EUSART_RX_ISR(void);
-
-/**
- * @brief ISR for MSSP SPI interrupt
- */
-void MSSP_SPI_ISR(void);
-
-/**
- * @brief ISR for MSSP I2C interrupt
- */
-void MSSP_I2C_ISR(void);
-
-/**
- * @brief ISR for MSSP I2C bus collision interrupt
- */
-void MSSP_I2C_BC_ISR(void);
-
+///**
+// * @brief ISR for Timer0 overflow interrupt
+// */
+//void TMR0_ISR(void);
+//
+///**
+// * @brief ISR for Timer1 overflow interrupt
+// */
+//void TMR1_ISR(void);
+//
+///**
+// * @brief ISR for Timer2 overflow interrupt
+// */
+//void TMR2_ISR(void);
+//
+///**
+// * @brief ISR for Timer3 overflow interrupt
+// */
+//void TMR3_ISR(void);
+//
+///**
+// * @brief ISR for Capture/Compare/PWM module CCP1
+// */
+//void CCP1_ISR(void);
+//
+///**
+// * @brief ISR for Capture/Compare/PWM module CCP2
+// */
+//void CCP2_ISR(void);
+//
+///**
+// * @brief ISR for EUSART transmit interrupt
+// */
+//void EUSART_TX_ISR(void);
+//
+///**
+// * @brief ISR for EUSART receive interrupt
+// */
+//void EUSART_RX_ISR(void);
+//
+///**
+// * @brief ISR for MSSP SPI interrupt
+// */
+//void MSSP_SPI_ISR(void);
+//
+///**
+// * @brief ISR for MSSP I2C interrupt
+// */
+//void MSSP_I2C_ISR(void);
+//
+///**
+// * @brief ISR for MSSP I2C bus collision interrupt
+// */
+//void MSSP_I2C_BC_ISR(void);
 #endif	/* MCAL_INTERRUPT_MANAGER_H */
 

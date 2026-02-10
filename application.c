@@ -14,20 +14,27 @@
 
 #include "application.h"
 
+led_t red_led = 
+{
+    .port_name = PORTB_INDEX,
+    .pin = PIN0,
+    .led_status = GPIO_PIN_LOW
+};
 
 int main() { 
     Std_ReturnType ret = E_NOT_OK;
     application_intialize();
 
     while(1){
-        
+        led_turn_toggle(&red_led);
+        __delay_ms(250);
     }
     return (EXIT_SUCCESS);
 }
 
 void application_intialize(void){
     Std_ReturnType ret = E_NOT_OK;
-    
+    ret = led_initialize(&red_led);
 }
 
 

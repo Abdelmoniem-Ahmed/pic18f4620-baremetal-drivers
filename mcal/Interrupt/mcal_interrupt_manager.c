@@ -142,7 +142,9 @@ void __interrupt() Interrupt_Manager(void){
         RB7_ISR_Flag = 1;
         RB7_ISR(0);
     }
-    else{ /* Nothing */ }
+    else{ /* Nothing */ }   
+/*---------- until implemented will be commented ----------*/
+    
 #if    INTERRUPT_FEATURE_ENABLE == ADC_INTERRUPT_FEATURE_ENABLE    
     if((INTERRUPT_ENABLE == PIE1bits.ADIE ) && (INTERRUPT_OCCUR == PIR1bits.ADIF )){
         ADC_ISR();
@@ -150,92 +152,81 @@ void __interrupt() Interrupt_Manager(void){
     else{ /* Nothing */ }
 #endif    
     
-#if    TIMER0_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
-    if((INTERRUPT_ENABLE == INTCONbits.TMR0IE) && (INTERRUPT_OCCUR == INTCONbits.TMR0IF)){
-        TMR0_ISR();
-    }
-    else{ /* Nothing */ }
-#endif
-
-#if    TIMER1_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
-    if((INTERRUPT_ENABLE == PIE1bits.TMR1IE) && (INTERRUPT_OCCUR == PIR1bits.TMR1IF)){
-        TMR1_ISR();
-    }
-    else{ /* Nothing */ }
-#endif
-
-#if    TIMER2_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
-    if((INTERRUPT_ENABLE == PIE1bits.TMR2IE) && (INTERRUPT_OCCUR == PIR1bits.TMR2IF)){
-        TMR2_ISR();
-    }
-    else{ /* Nothing */ }
-#endif
-
-#if    TIMER3_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
-    if((INTERRUPT_ENABLE == PIE2bits.TMR3IE) && (INTERRUPT_OCCUR == PIR2bits.TMR3IF)){
-        TMR3_ISR();
-    }
-    else{ /* Nothing */ }
-#endif    
-
-#if    CCP1_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
-    if((INTERRUPT_ENABLE == PIE1bits.CCP1IE) && (INTERRUPT_OCCUR == PIR1bits.CCP1IF)){
-        CCP1_ISR();
-    }
-    else{ /* Nothing */ }
-#endif
-    
-#if    CCP2_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
-    if((INTERRUPT_ENABLE == PIE2bits.CCP2IE) && (INTERRUPT_OCCUR == PIR2bits.CCP2IF)){
-        CCP2_ISR();
-    }
-    else{ /* Nothing */ }
-#endif    
-
-#if    EUSART_TX_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
-    if((INTERRUPT_ENABLE == PIE1bits.TXIE) && (INTERRUPT_OCCUR == PIR1bits.TXIF)){
-        EUSART_TX_ISR();
-    }
-    else{ /* Nothing */ }
-#endif
-    
-#if    EUSART_RX_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
-    if((INTERRUPT_ENABLE == PIE1bits.RCIE) && (INTERRUPT_OCCUR == PIR1bits.RCIF)){
-        EUSART_RX_ISR();
-    }
-    else{ /* Nothing */ }
-#endif
-
-#if    MSSP_SPI_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
-    if((INTERRUPT_ENABLE == PIE1bits.SSPIE) && (INTERRUPT_OCCUR == PIR1bits.SSPIF)){
-        MSSP_SPI_ISR();
-    }
-    else{ /* Nothing */ }
-#endif
-
-#if    MSSP_I2C_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
-    if((INTERRUPT_ENABLE == PIE1bits.SSPIE) && (INTERRUPT_OCCUR == PIR1bits.SSPIF)){
-        MSSP_I2C_ISR();
-    }
-    else{ /* Nothing */ }
-#endif
-
-#if    MSSP_I2C_BUS_COL_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
-    if((INTERRUPT_ENABLE == PIE2bits.BCLIE) && (INTERRUPT_OCCUR == PIR2bits.BCLIF)){
-        MSSP_I2C_BC_ISR();
-    }
-    else{ /* Nothing */ }
-#endif
-    
-    
-    
+//#if    TIMER0_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
+//    if((INTERRUPT_ENABLE == INTCONbits.TMR0IE) && (INTERRUPT_OCCUR == INTCONbits.TMR0IF)){
+//        TMR0_ISR();
+//    }
+//    else{ /* Nothing */ }
+//#endif
+//
+//#if    TIMER1_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
+//    if((INTERRUPT_ENABLE == PIE1bits.TMR1IE) && (INTERRUPT_OCCUR == PIR1bits.TMR1IF)){
+//        TMR1_ISR();
+//    }
+//    else{ /* Nothing */ }
+//#endif
+//
+//#if    TIMER2_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
+//    if((INTERRUPT_ENABLE == PIE1bits.TMR2IE) && (INTERRUPT_OCCUR == PIR1bits.TMR2IF)){
+//        TMR2_ISR();
+//    }
+//    else{ /* Nothing */ }
+//#endif
+//
+//#if    TIMER3_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
+//    if((INTERRUPT_ENABLE == PIE2bits.TMR3IE) && (INTERRUPT_OCCUR == PIR2bits.TMR3IF)){
+//        TMR3_ISR();
+//    }
+//    else{ /* Nothing */ }
+//#endif    
+//
+//#if    CCP1_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
+//    if((INTERRUPT_ENABLE == PIE1bits.CCP1IE) && (INTERRUPT_OCCUR == PIR1bits.CCP1IF)){
+//        CCP1_ISR();
+//    }
+//    else{ /* Nothing */ }
+//#endif
+//    
+//#if    CCP2_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
+//    if((INTERRUPT_ENABLE == PIE2bits.CCP2IE) && (INTERRUPT_OCCUR == PIR2bits.CCP2IF)){
+//        CCP2_ISR();
+//    }
+//    else{ /* Nothing */ }
+//#endif    
+//
+//#if    EUSART_TX_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
+//    if((INTERRUPT_ENABLE == PIE1bits.TXIE) && (INTERRUPT_OCCUR == PIR1bits.TXIF)){
+//        EUSART_TX_ISR();
+//    }
+//    else{ /* Nothing */ }
+//#endif
+//    
+//#if    EUSART_RX_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
+//    if((INTERRUPT_ENABLE == PIE1bits.RCIE) && (INTERRUPT_OCCUR == PIR1bits.RCIF)){
+//        EUSART_RX_ISR();
+//    }
+//    else{ /* Nothing */ }
+//#endif
+//
+//#if    MSSP_SPI_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
+//    if((INTERRUPT_ENABLE == PIE1bits.SSPIE) && (INTERRUPT_OCCUR == PIR1bits.SSPIF)){
+//        MSSP_SPI_ISR();
+//    }
+//    else{ /* Nothing */ }
+//#endif
+//
+//#if    MSSP_I2C_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
+//    if((INTERRUPT_ENABLE == PIE1bits.SSPIE) && (INTERRUPT_OCCUR == PIR1bits.SSPIF)){
+//        MSSP_I2C_ISR();
+//    }
+//    else{ /* Nothing */ }
+//#endif
+//
+//#if    MSSP_I2C_BUS_COL_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
+//    if((INTERRUPT_ENABLE == PIE2bits.BCLIE) && (INTERRUPT_OCCUR == PIR2bits.BCLIF)){
+//        MSSP_I2C_BC_ISR();
+//    }
+//    else{ /* Nothing */ }
+//#endif
 }
-
-
 #endif
-
-
-
-
-
-

@@ -17,11 +17,18 @@
 
 /* Section : Includes */
 
-#include "compiler.h"
-#include "device_config.h"
-#include "std_libraries.h"
-#include "std_types.h"
-#include "hal_gpio.h"
+#include"compiler.h"
+#include"device_config.h"
+#include"std_libraries.h"
+#include"std_types.h"
+#include"ecu_layer_init.h"
+#include"hal_gpio.h"
+#include"hal_adc.h"
+#include"mcal_externl_interrupt.h"
+#include"mcal_internal_interrupt.h"
+#include"mcal_interrupt_config.h"
+#include"mcal_interrupt_gen_cfg.h"
+#include"mcal_interrupt_manager.h"
 
 /* Section: Macro Declarations */
 
