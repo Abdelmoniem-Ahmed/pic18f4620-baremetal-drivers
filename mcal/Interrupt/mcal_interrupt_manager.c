@@ -152,20 +152,20 @@ void __interrupt() Interrupt_Manager(void){
     else{ /* Nothing */ }
 #endif    
     
-//#if    TIMER0_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
-//    if((INTERRUPT_ENABLE == INTCONbits.TMR0IE) && (INTERRUPT_OCCUR == INTCONbits.TMR0IF)){
-//        TMR0_ISR();
-//    }
-//    else{ /* Nothing */ }
-//#endif
-//
-//#if    TIMER1_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
-//    if((INTERRUPT_ENABLE == PIE1bits.TMR1IE) && (INTERRUPT_OCCUR == PIR1bits.TMR1IF)){
-//        TMR1_ISR();
-//    }
-//    else{ /* Nothing */ }
-//#endif
-//
+#if    TIMER0_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
+    if((INTERRUPT_ENABLE == INTCONbits.TMR0IE) && (INTERRUPT_OCCUR == INTCONbits.TMR0IF)){
+        TMR0_ISR();
+    }
+    else{ /* Nothing */ }
+#endif
+
+#if    TIMER1_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
+    if((INTERRUPT_ENABLE == PIE1bits.TMR1IE) && (INTERRUPT_OCCUR == PIR1bits.TMR1IF)){
+        TMR1_ISR();
+    }
+    else{ /* Nothing */ }
+#endif
+
 //#if    TIMER2_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
 //    if((INTERRUPT_ENABLE == PIE1bits.TMR2IE) && (INTERRUPT_OCCUR == PIR1bits.TMR2IF)){
 //        TMR2_ISR();

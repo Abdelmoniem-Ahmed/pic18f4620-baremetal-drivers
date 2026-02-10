@@ -24,6 +24,8 @@
 #include"ecu_layer_init.h"
 #include"hal_gpio.h"
 #include"hal_adc.h"
+#include"Timer0.h"
+#include"timer1.h"
 #include"mcal_externl_interrupt.h"
 #include"mcal_internal_interrupt.h"
 #include"mcal_interrupt_config.h"

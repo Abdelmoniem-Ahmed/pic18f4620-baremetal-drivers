@@ -89,16 +89,16 @@ void RB7_ISR(uint8 source);
  */
 void ADC_ISR(void);
 
-///**
-// * @brief ISR for Timer0 overflow interrupt
-// */
-//void TMR0_ISR(void);
-//
-///**
-// * @brief ISR for Timer1 overflow interrupt
-// */
-//void TMR1_ISR(void);
-//
+/**
+ * @brief ISR for Timer0 overflow interrupt
+ */
+void TMR0_ISR(void);
+
+/**
+ * @brief ISR for Timer1 overflow interrupt
+ */
+void TMR1_ISR(void);
+
 ///**
 // * @brief ISR for Timer2 overflow interrupt
 // */
