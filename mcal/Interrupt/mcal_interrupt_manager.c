@@ -173,13 +173,13 @@ void __interrupt() Interrupt_Manager(void){
     else{ /* Nothing */ }
 #endif
 
-//#if    TIMER3_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
-//    if((INTERRUPT_ENABLE == PIE2bits.TMR3IE) && (INTERRUPT_OCCUR == PIR2bits.TMR3IF)){
-//        TMR3_ISR();
-//    }
-//    else{ /* Nothing */ }
-//#endif    
-//
+#if    TIMER3_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
+    if((INTERRUPT_ENABLE == PIE2bits.TMR3IE) && (INTERRUPT_OCCUR == PIR2bits.TMR3IF)){
+        TMR3_ISR();
+    }
+    else{ /* Nothing */ }
+#endif    
+
 //#if    CCP1_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
 //    if((INTERRUPT_ENABLE == PIE1bits.CCP1IE) && (INTERRUPT_OCCUR == PIR1bits.CCP1IF)){
 //        CCP1_ISR();

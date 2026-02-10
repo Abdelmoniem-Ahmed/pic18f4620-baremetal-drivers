@@ -102,11 +102,11 @@ void TMR1_ISR(void);
  */
 void TMR2_ISR(void);
 
-///**
-// * @brief ISR for Timer3 overflow interrupt
-// */
-//void TMR3_ISR(void);
-//
+/**
+ * @brief ISR for Timer3 overflow interrupt
+ */
+void TMR3_ISR(void);
+
 ///**
 // * @brief ISR for Capture/Compare/PWM module CCP1
 // */
