@@ -82,8 +82,6 @@ void RB7_ISR(uint8 source);
  * ----------------------------------------------------
  */
 
-/*---------- until implemented will be commented ----------*/
-
 /**
  * @brief ISR for Analog-to-Digital Converter (ADC)
  */
@@ -99,11 +97,11 @@ void TMR0_ISR(void);
  */
 void TMR1_ISR(void);
 
-///**
-// * @brief ISR for Timer2 overflow interrupt
-// */
-//void TMR2_ISR(void);
-//
+/**
+ * @brief ISR for Timer2 overflow interrupt
+ */
+void TMR2_ISR(void);
+
 ///**
 // * @brief ISR for Timer3 overflow interrupt
 // */
