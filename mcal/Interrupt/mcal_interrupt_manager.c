@@ -208,25 +208,25 @@ void __interrupt() Interrupt_Manager(void){
     else{ /* Nothing */ }
 #endif
 
-//#if    MSSP_SPI_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
-//    if((INTERRUPT_ENABLE == PIE1bits.SSPIE) && (INTERRUPT_OCCUR == PIR1bits.SSPIF)){
-//        MSSP_SPI_ISR();
-//    }
-//    else{ /* Nothing */ }
-//#endif
-//
-//#if    MSSP_I2C_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
-//    if((INTERRUPT_ENABLE == PIE1bits.SSPIE) && (INTERRUPT_OCCUR == PIR1bits.SSPIF)){
-//        MSSP_I2C_ISR();
-//    }
-//    else{ /* Nothing */ }
-//#endif
-//
-//#if    MSSP_I2C_BUS_COL_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
-//    if((INTERRUPT_ENABLE == PIE2bits.BCLIE) && (INTERRUPT_OCCUR == PIR2bits.BCLIF)){
-//        MSSP_I2C_BC_ISR();
-//    }
-//    else{ /* Nothing */ }
-//#endif
+#if    MSSP_SPI_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
+    if((INTERRUPT_ENABLE == PIE1bits.SSPIE) && (INTERRUPT_OCCUR == PIR1bits.SSPIF)){
+        MSSP_SPI_ISR();
+    }
+    else{ /* Nothing */ }
+#endif
+
+#if    MSSP_I2C_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
+    if((INTERRUPT_ENABLE == PIE1bits.SSPIE) && (INTERRUPT_OCCUR == PIR1bits.SSPIF)){
+        MSSP_I2C_ISR();
+    }
+    else{ /* Nothing */ }
+#endif
+
+#if    MSSP_I2C_BUS_COL_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
+    if((INTERRUPT_ENABLE == PIE2bits.BCLIE) && (INTERRUPT_OCCUR == PIR2bits.BCLIF)){
+        MSSP_I2C_BC_ISR();
+    }
+    else{ /* Nothing */ }
+#endif
 }
 #endif

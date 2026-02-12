@@ -30,6 +30,8 @@
 #include"Timer3.h"
 #include"CCP.h"
 #include"hal_eusart.h"
+#include"SPI_APIs.h"
+#include"I2C_APIs.h"
 #include"mcal_externl_interrupt.h"
 #include"mcal_internal_interrupt.h"
 #include"mcal_interrupt_config.h"

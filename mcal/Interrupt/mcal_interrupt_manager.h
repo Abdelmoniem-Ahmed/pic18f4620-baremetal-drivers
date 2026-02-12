@@ -127,19 +127,19 @@ void EUSART_TX_ISR(void);
  */
 void EUSART_RX_ISR(void);
 
-///**
-// * @brief ISR for MSSP SPI interrupt
-// */
-//void MSSP_SPI_ISR(void);
-//
-///**
-// * @brief ISR for MSSP I2C interrupt
-// */
-//void MSSP_I2C_ISR(void);
-//
-///**
-// * @brief ISR for MSSP I2C bus collision interrupt
-// */
-//void MSSP_I2C_BC_ISR(void);
+/**
+ * @brief ISR for MSSP SPI interrupt
+ */
+void MSSP_SPI_ISR(void);
+
+/**
+ * @brief ISR for MSSP I2C interrupt
+ */
+void MSSP_I2C_ISR(void);
+
+/**
+ * @brief ISR for MSSP I2C bus collision interrupt
+ */
+void MSSP_I2C_BC_ISR(void);
 #endif	/* MCAL_INTERRUPT_MANAGER_H */
 
