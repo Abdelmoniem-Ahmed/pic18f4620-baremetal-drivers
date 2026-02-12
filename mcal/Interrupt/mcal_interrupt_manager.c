@@ -194,20 +194,20 @@ void __interrupt() Interrupt_Manager(void){
     else{ /* Nothing */ }
 #endif    
 
-//#if    EUSART_TX_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
-//    if((INTERRUPT_ENABLE == PIE1bits.TXIE) && (INTERRUPT_OCCUR == PIR1bits.TXIF)){
-//        EUSART_TX_ISR();
-//    }
-//    else{ /* Nothing */ }
-//#endif
-//    
-//#if    EUSART_RX_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
-//    if((INTERRUPT_ENABLE == PIE1bits.RCIE) && (INTERRUPT_OCCUR == PIR1bits.RCIF)){
-//        EUSART_RX_ISR();
-//    }
-//    else{ /* Nothing */ }
-//#endif
-//
+#if    EUSART_TX_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
+    if((INTERRUPT_ENABLE == PIE1bits.TXIE) && (INTERRUPT_OCCUR == PIR1bits.TXIF)){
+        EUSART_TX_ISR();
+    }
+    else{ /* Nothing */ }
+#endif
+    
+#if    EUSART_RX_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
+    if((INTERRUPT_ENABLE == PIE1bits.RCIE) && (INTERRUPT_OCCUR == PIR1bits.RCIF)){
+        EUSART_RX_ISR();
+    }
+    else{ /* Nothing */ }
+#endif
+
 //#if    MSSP_SPI_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
 //    if((INTERRUPT_ENABLE == PIE1bits.SSPIE) && (INTERRUPT_OCCUR == PIR1bits.SSPIF)){
 //        MSSP_SPI_ISR();

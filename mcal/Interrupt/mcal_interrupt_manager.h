@@ -117,16 +117,16 @@ void CCP1_ISR(void);
  */
 void CCP2_ISR(void);
 
-///**
-// * @brief ISR for EUSART transmit interrupt
-// */
-//void EUSART_TX_ISR(void);
-//
-///**
-// * @brief ISR for EUSART receive interrupt
-// */
-//void EUSART_RX_ISR(void);
-//
+/**
+ * @brief ISR for EUSART transmit interrupt
+ */
+void EUSART_TX_ISR(void);
+
+/**
+ * @brief ISR for EUSART receive interrupt
+ */
+void EUSART_RX_ISR(void);
+
 ///**
 // * @brief ISR for MSSP SPI interrupt
 // */

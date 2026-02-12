@@ -29,6 +29,7 @@
 #include"Timer2.h"
 #include"Timer3.h"
 #include"CCP.h"
+#include"hal_eusart.h"
 #include"mcal_externl_interrupt.h"
 #include"mcal_internal_interrupt.h"
 #include"mcal_interrupt_config.h"
