@@ -107,16 +107,16 @@ void TMR2_ISR(void);
  */
 void TMR3_ISR(void);
 
-///**
-// * @brief ISR for Capture/Compare/PWM module CCP1
-// */
-//void CCP1_ISR(void);
-//
-///**
-// * @brief ISR for Capture/Compare/PWM module CCP2
-// */
-//void CCP2_ISR(void);
-//
+/**
+ * @brief ISR for Capture/Compare/PWM module CCP1
+ */
+void CCP1_ISR(void);
+
+/**
+ * @brief ISR for Capture/Compare/PWM module CCP2
+ */
+void CCP2_ISR(void);
+
 ///**
 // * @brief ISR for EUSART transmit interrupt
 // */

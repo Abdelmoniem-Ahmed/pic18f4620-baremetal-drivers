@@ -180,20 +180,20 @@ void __interrupt() Interrupt_Manager(void){
     else{ /* Nothing */ }
 #endif    
 
-//#if    CCP1_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
-//    if((INTERRUPT_ENABLE == PIE1bits.CCP1IE) && (INTERRUPT_OCCUR == PIR1bits.CCP1IF)){
-//        CCP1_ISR();
-//    }
-//    else{ /* Nothing */ }
-//#endif
-//    
-//#if    CCP2_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
-//    if((INTERRUPT_ENABLE == PIE2bits.CCP2IE) && (INTERRUPT_OCCUR == PIR2bits.CCP2IF)){
-//        CCP2_ISR();
-//    }
-//    else{ /* Nothing */ }
-//#endif    
-//
+#if    CCP1_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
+    if((INTERRUPT_ENABLE == PIE1bits.CCP1IE) && (INTERRUPT_OCCUR == PIR1bits.CCP1IF)){
+        CCP1_ISR();
+    }
+    else{ /* Nothing */ }
+#endif
+    
+#if    CCP2_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
+    if((INTERRUPT_ENABLE == PIE2bits.CCP2IE) && (INTERRUPT_OCCUR == PIR2bits.CCP2IF)){
+        CCP2_ISR();
+    }
+    else{ /* Nothing */ }
+#endif    
+
 //#if    EUSART_TX_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
 //    if((INTERRUPT_ENABLE == PIE1bits.TXIE) && (INTERRUPT_OCCUR == PIR1bits.TXIF)){
 //        EUSART_TX_ISR();
