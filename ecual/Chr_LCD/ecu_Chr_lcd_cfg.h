@@ -70,7 +70,7 @@
  * - API availability
  * - Internal driver implementation
  */
-#define CHR_LCD_4BIT_OR_8BIT_MODE_CFG           CHR_LCD_8BIT_MODE_ENABLE
+#define CHR_LCD_4BIT_OR_8BIT_MODE_CFG           CHR_LCD_4BIT_MODE_ENABLE
 
 /* Section: Macro Functions Declarations */
 

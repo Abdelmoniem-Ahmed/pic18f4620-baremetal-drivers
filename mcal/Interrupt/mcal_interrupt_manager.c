@@ -209,14 +209,14 @@ void __interrupt() Interrupt_Manager(void){
 #endif
 
 #if    MSSP_SPI_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
-    if((INTERRUPT_ENABLE == PIE1bits.SSPIE) && (INTERRUPT_OCCUR == PIR1bits.SSPIF)){
+    if((INTERRUPT_ENABLE == PIE1bits.SSPIE) && (INTERRUPT_OCCUR == PIR1bits.SSPIF) && (5 >= SSPCON1bits.SSPM)){
         MSSP_SPI_ISR();
     }
     else{ /* Nothing */ }
 #endif
 
 #if    MSSP_I2C_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
-    if((INTERRUPT_ENABLE == PIE1bits.SSPIE) && (INTERRUPT_OCCUR == PIR1bits.SSPIF)){
+    if((INTERRUPT_ENABLE == PIE1bits.SSPIE) && (INTERRUPT_OCCUR == PIR1bits.SSPIF) && (6 <= SSPCON1bits.SSPM)){
         MSSP_I2C_ISR();
     }
     else{ /* Nothing */ }

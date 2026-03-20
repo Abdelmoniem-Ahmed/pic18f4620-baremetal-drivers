@@ -2,16 +2,17 @@
 
 ## 📌 Overview
 
-This driver provides a clean and configurable **MCAL interface** for the **MSSP peripheral in I2C mode** on the **PIC18F4620** microcontroller.  
+This driver provides a clean and configurable **MCAL interface** for the **MSSP peripheral in I2C mode** on the **PIC18F4620**.
 
-It supports:
+It is designed for **bare-metal embedded systems** and supports both **polling-based** and **interrupt-driven** communication.
 
-- **Master mode** and **Slave mode** (7-bit / 10-bit addressing)  
-- Start / Repeated Start / Stop generation  
-- ACK / NACK control  
-- Blocking read/write operations  
-- Optional **interrupt support** with callback mechanism  
-- Bus collision detection  
+### ✅ Key Capabilities
+- Master & Slave modes (7-bit / 10-bit addressing)
+- Start / Repeated Start / Stop generation
+- ACK / NACK control
+- Blocking read/write operations
+- Interrupt support with callback mechanism
+- Bus collision detection
 
 The driver follows **bare-metal embedded best practices** and can be used in **polling-based** or **interrupt-driven** applications.  
 
@@ -32,7 +33,7 @@ The driver follows **bare-metal embedded best practices** and can be used in **p
 - Clock frequency configuration  
 - Blocking write and read operations  
 - Start / Repeated Start / Stop condition generation  
-- Optional interrupts for transfer completion  
+- ACK/NACK control 
 
 ### Slave Mode
 
@@ -40,11 +41,20 @@ The driver follows **bare-metal embedded best practices** and can be used in **p
 - General Call enable/disable  
 - Interrupts for receive, overflow, and write collision  
 
-### Interrupt Support
+### 🔹 Interrupt Support
+- Default interrupt callback
+- Receive overflow callback
+- Bus collision callback
+- Optional priority levels
 
-- Default interrupt handler for receive/overflow events  
-- Bus collision interrupt handler  
-- Optional interrupt priority configuration  
+---
+
+## 🧠 Design Highlights
+
+- Register-level implementation based on datasheet
+- Modular configuration structure
+- Supports both **polling and interrupt architectures**
+- Clean separation between **low-level config** and **high-level APIs**
 
 ---
 
@@ -122,6 +132,26 @@ Std_ReturnType MSSP_I2C_DeInit(const mssp_i2c_t *i2c_obj);
 - **ACK/NACK**: master can control acknowledge for received bytes.
 - **Start/Stop**: generates proper bus conditions according to I2C protocol.
 
+```c
+Std_ReturnType MSSP_I2C_Master_Send_Start(void);
+Std_ReturnType MSSP_I2C_Master_Send_Repeated_Start(void);
+Std_ReturnType MSSP_I2C_Master_Send_Stop(void);
+
+Std_ReturnType MSSP_I2C_Master_Write_Blocking(uint8 data, uint8 *ack);
+Std_ReturnType MSSP_I2C_Master_Read_Blocking(uint8 ack, uint8 *data);
+```
+
+---
+
+### High-Level Helpers
+
+```c
+Std_ReturnType MSSP_I2C_Read_Byte_Register(uint8 address, uint8 reg, uint8 *data);
+Std_ReturnType MSSP_I2C_Write_Byte_Register(uint8 address, uint8 reg, uint8 data);
+```
+
+---
+
 ## Example Usage
 
 ```c
@@ -142,13 +172,12 @@ uint8 data;
 int main(void){
     MSSP_I2C_Init(&i2c_master);
 
-    MSSP_I2C_Master_Send_Start(&i2c_master);
-    MSSP_I2C_Master_Write_Blocking(&i2c_master, 0x50, &ack);
-    MSSP_I2C_Master_Read_Blocking(&i2c_master, I2C_MASTER_SEND_NOT_ACK, &data);
-    MSSP_I2C_Master_Send_Stop(&i2c_master);
+    MSSP_I2C_Master_Send_Start();
+    MSSP_I2C_Master_Write_Blocking(0x50, &ack);
+    MSSP_I2C_Master_Read_Blocking(I2C_MASTER_SEND_NOT_ACK, &data);
+    MSSP_I2C_Master_Send_Stop();
 
-    MSSP_I2C_DeInit(&i2c_master);
-    return 0;
+    while(1);
 }
 ```
 
@@ -158,6 +187,8 @@ int main(void){
 - For **non-blocking operation**, a state machine with interrupt callbacks can be implemented.
 - Always check `ACK` after writes to ensure proper communication.
 - Supports both **polling and interrupt-driven** modes.
+- Blocking functions may hang → consider adding timeout protection
+- For advanced systems → use interrupt-based design
 
 ## Error Handling
 
@@ -166,10 +197,20 @@ int main(void){
   - `E_OK` on success
   - `E_NOT_OK` on invalid parameters
 
+## 🔗 Dependencies
+
+- GPIO HAL (`hal_gpio.h`)
+- Interrupt module (`mcal_internal_interrupt.h`)
+- Standard types (`std_types.h`)
+
+```markdown
+> ⚠️ TODO: Add timeout mechanism to avoid infinite blocking in polling mode.
+```
+
 ## Author
 
 **Abdelmoniem Ahmed**  
-Embedded Software Engineer
+Embedded Software Engineer – MCU & Low-Level Systems
 
 🔗 **LinkedIn**  
 https://www.linkedin.com/in/abdelmoniem-ahmed/

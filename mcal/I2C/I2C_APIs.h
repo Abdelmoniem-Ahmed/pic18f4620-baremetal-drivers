@@ -43,8 +43,8 @@
 #define MSSP_I2C_SLAVE_MODE                 0
 
 /* Slew Rate Enable / Disable */
-#define I2C_SLEW_RATE_ENABLE_100kHZ         0
-#define I2C_SLEW_RATE_DISABLE_400kHZ        1
+#define I2C_SLEW_RATE_ENABLE_400kHZ         0
+#define I2C_SLEW_RATE_DISABLE_100kHZ        1
 
 /* SMBus Enable / Disable */
 #define I2C_SMBUS_ENABLE                    1
@@ -89,8 +89,8 @@
 #define MSSP_I2C_MODE_SELECT(MSSP_I2C_Mode_Select)  ( SSPCON1bits.SSPM   = MSSP_I2C_Mode_Select )
 
 /* Slew Rate Enable / Disable */
-#define I2C_SLEW_RATE_ENABLE_CFG()                  ( SSPSTATbits.SMP = I2C_SLEW_RATE_ENABLE_100kHZ )
-#define I2C_SLEW_RATE_DISABLE_CFG()                 ( SSPSTATbits.SMP = I2C_SLEW_RATE_DISABLE_400kHZ)
+#define I2C_SLEW_RATE_ENABLE_CFG()                  ( SSPSTATbits.SMP = I2C_SLEW_RATE_ENABLE_400kHZ )
+#define I2C_SLEW_RATE_DISABLE_CFG()                 ( SSPSTATbits.SMP = I2C_SLEW_RATE_DISABLE_100kHZ)
 
 /* SMBus Enable / Disable */
 #define I2C_SMBUS_ENABLE_CFG()                      ( SSPSTATbits.CKE = I2C_SMBUS_ENABLE )
@@ -210,37 +210,31 @@ Std_ReturnType MSSP_I2C_DeInit(const mssp_i2c_t * i2c_obj);
 /**
  * @brief Generate Start condition on I2C bus (Master mode)
  *
- * @param i2c_obj Pointer to I2C configuration structure
- *
  * @return Std_ReturnType
  *
  * @note
  * Blocks until Start condition is completed by hardware.
  */
-Std_ReturnType MSSP_I2C_Master_Send_Start(const mssp_i2c_t * i2c_obj);
+Std_ReturnType MSSP_I2C_Master_Send_Start(void);
 
 /**
  * @brief Generate Repeated Start condition (Master mode)
  *
- * @param i2c_obj Pointer to I2C configuration structure
- *
  * @return Std_ReturnType
  */
-Std_ReturnType MSSP_I2C_Master_Send_Repeated_Start(const mssp_i2c_t * i2c_obj);
+Std_ReturnType MSSP_I2C_Master_Send_Repeated_Start(void);
 
 /**
  * @brief Generate Stop condition on I2C bus (Master mode)
  *
- * @param i2c_obj Pointer to I2C configuration structure
- *
  * @return Std_ReturnType
  */
-Std_ReturnType MSSP_I2C_Master_Send_Stop(const mssp_i2c_t * i2c_obj);
+Std_ReturnType MSSP_I2C_Master_Send_Stop(void);
 
 /**
  * @brief Transmit one byte over I2C bus (Blocking mode)
  *
- * @param i2c_obj Pointer to I2C configuration structure
+ * 
  * @param i2c_data Data byte to transmit
  * @param _ack Pointer to store acknowledge status
  *
@@ -250,12 +244,12 @@ Std_ReturnType MSSP_I2C_Master_Send_Stop(const mssp_i2c_t * i2c_obj);
  * Function waits until transmission is complete.
  * ACK status is stored in `_ack`.
  */
-Std_ReturnType MSSP_I2C_Master_Write_Blocking(const mssp_i2c_t * i2c_obj , uint8 i2c_data , uint8 *_ack);
+Std_ReturnType MSSP_I2C_Master_Write_Blocking( uint8 i2c_data , uint8 *_ack);
 
 /**
  * @brief Receive one byte from I2C bus (Blocking mode)
  *
- * @param i2c_obj Pointer to I2C configuration structure
+ * 
  * @param ack Acknowledge selection (ACK / NACK)
  * @param i2c_data Pointer to store received byte
  *
@@ -265,8 +259,43 @@ Std_ReturnType MSSP_I2C_Master_Write_Blocking(const mssp_i2c_t * i2c_obj , uint8
  * After reading, the master sends ACK or NACK
  * depending on the `ack` parameter.
  */
-Std_ReturnType MSSP_I2C_Master_Read_Blocking(const mssp_i2c_t * i2c_obj , uint8 ack ,uint8 * i2c_data);
+Std_ReturnType MSSP_I2C_Master_Read_Blocking(uint8 ack ,uint8 * i2c_data);
 
+/**
+ * @brief Read a single byte from an I2C register   <- Blocking Method ->
+ *
+ * @param address 7-bit I2C slave address
+ * @param reg     Register address to read from
+ * @param data    Pointer to store the received byte
+ *
+ * @return Std_ReturnType
+ *         - E_OK     : Read successful
+ *         - E_NOT_OK : Error occurred
+ *
+ * @note
+ * Implements the following I2C sequence:
+ *
+ * START
+ * -> Slave Address + Write
+ * -> Register Address
+ * -> Repeated START
+ * -> Slave Address + Read
+ * -> Read Byte
+ * -> STOP
+ */
+Std_ReturnType MSSP_I2C_Read_Byte_Register(uint8 address, uint8 reg , uint8 * data);
+
+/**
+ * @brief Write a single byte to a specific EEPROM register
+ *
+ * @param address I2C slave address
+ * @param reg     Memory register address inside EEPROM
+ * @param data    Byte to write
+ *
+ * @return Std_ReturnType
+ */
+
+Std_ReturnType MSSP_I2C_Write_Byte_Register(uint8 address, uint8 reg , uint8 data);
 
 #endif	/* I2C_APIS_H */
 

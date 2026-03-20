@@ -67,7 +67,7 @@ Std_ReturnType MSSP_I2C_Init(const mssp_i2c_t * i2c_obj){
             /* Release the Clock */
             SSPCON1bits.CKP = 1 ; /* Release Clock */
             /* Assign the I2C Slave Address */
-            SSPADD = i2c_obj->i2c_cfg.i2c_slave_address ;
+            SSPADD = (i2c_obj->i2c_cfg.i2c_slave_address << 1) ;
             /* I2C Slave Configuration */
             /* Function Like Macro Made It For Both Slave / Master */
             /* MSSP_I2C_MODE_SELECT(i2c_obj->i2c_cfg.i2c_mode_cfg); */
@@ -174,83 +174,84 @@ Std_ReturnType MSSP_I2C_DeInit(const mssp_i2c_t * i2c_obj){
 
 
 
-Std_ReturnType MSSP_I2C_Master_Send_Start(const mssp_i2c_t * i2c_obj){
+Std_ReturnType MSSP_I2C_Master_Send_Start(void){
     Std_ReturnType ret = E_OK;
-    if(NULL == i2c_obj){
-        ret = E_NOT_OK;
+    
+    /* wait until I2C is in IDLE state */
+    while((SSPCON2 & 0x1F) || (SSPSTATbits.R_W));
+    /* Initiates the start condition on SDA and CLK Pin*/
+    SSPCON2bits.SEN = 1 ; /* Initiates Start condition on SDA and SCL pins. Automatically cleared by hardware */ 
+    /* wait for the completion of start condition */
+    while((SSPCON2bits.SEN));
+    /* Clear interrupt flag on start condition event */
+    MSSP_I2C_INTERRUPT_CLEAR_FLAG();
+    
+    /* Report the start condition Detection */
+    if( START_CONDITION_DETECTED == SSPSTATbits.S){
+        ret = E_OK ;
     }
-    else{
-        /* Initiates the start condition on SDA and CLK Pin*/
-        SSPCON2bits.SEN = 1 ; /* Initiates Start condition on SDA and SCL pins. Automatically cleared by hardware */ 
-        /* wait for the completion of start condition */
-        while(SSPCON2bits.SEN);
-        /* Clear interrupt flag on start condition event */
-        MSSP_I2C_INTERRUPT_CLEAR_FLAG();
-        /* Report the start condition Detection */
-        if( START_CONDITION_DETECTED == SSPSTATbits.S){
-            ret = E_OK ;
-        }
-        else if( START_CONDITION_NOT_DETECTED == SSPSTATbits.S ){
-            ret = E_NOT_OK ;
-        }
-        else{ /* Nothing */ }
+    else if( START_CONDITION_NOT_DETECTED == SSPSTATbits.S ){
+        ret = E_NOT_OK ;
     }
+    else{ /* Nothing */ }
+        
     return ret ; 
     
 }
 
 
 
-Std_ReturnType MSSP_I2C_Master_Send_Repeated_Start(const mssp_i2c_t * i2c_obj){
+Std_ReturnType MSSP_I2C_Master_Send_Repeated_Start(void){
     Std_ReturnType ret = E_OK;
-    if(NULL == i2c_obj){
-        ret = E_NOT_OK;
-    }
-    else{
-        /* Initiates the repeated start condition on SDA and CLK Pin*/
-        SSPCON2bits.RSEN = 1 ; /* Initiates Repeated Start condition on SDA and SCL pins. Automatically cleared by hardware */
-        /* wait for the completion of repeated start condition */
-        while(SSPCON2bits.RSEN);
-        /* Clear interrupt flag on repeated start condition event */
-        MSSP_I2C_INTERRUPT_CLEAR_FLAG();        
-    }
+    
+    /* wait until I2C is in IDLE state */
+    while((SSPCON2 & 0x1F) || (SSPSTATbits.R_W));
+    /* Initiates the repeated start condition on SDA and CLK Pin*/
+    SSPCON2bits.RSEN = 1 ; /* Initiates Repeated Start condition on SDA and SCL pins. Automatically cleared by hardware */
+    /* wait for the completion of repeated start condition */
+    while(SSPCON2bits.RSEN);
+    /* Clear interrupt flag on repeated start condition event */
+    MSSP_I2C_INTERRUPT_CLEAR_FLAG();        
+    
     return ret ; 
 }
 
 
 
-Std_ReturnType MSSP_I2C_Master_Send_Stop(const mssp_i2c_t * i2c_obj){
+Std_ReturnType MSSP_I2C_Master_Send_Stop(void){
     Std_ReturnType ret = E_OK;
-    if(NULL == i2c_obj){
-        ret = E_NOT_OK;
+    /* wait until I2C is in IDLE state */
+    while((SSPCON2 & 0x1F) || (SSPSTATbits.R_W));
+    /* Initiates the Stop condition on SDA and CLK Pin*/
+    SSPCON2bits.PEN = 1 ; /* Initiates Stop condition on SDA and SCL pins. Automatically cleared by hardware */
+    /* wait for the completion of Stop condition */
+    while(SSPCON2bits.PEN);
+    /* Clear interrupt flag on Stop condition event */
+    MSSP_I2C_INTERRUPT_CLEAR_FLAG();        
+    /* Report the Stop condition Detection */
+    if( STOP_CONDITION_DETECTED == SSPSTATbits.P ){
+        ret = E_OK ;
     }
-    else{
-        /* Initiates the Stop condition on SDA and CLK Pin*/
-        SSPCON2bits.PEN = 1 ; /* Initiates Stop condition on SDA and SCL pins. Automatically cleared by hardware */
-        /* wait for the completion of Stop condition */
-        while(SSPCON2bits.PEN);
-        /* Clear interrupt flag on Stop condition event */
-        MSSP_I2C_INTERRUPT_CLEAR_FLAG();        
-        /* Report the Stop condition Detection */
-        if( STOP_CONDITION_DETECTED == SSPSTATbits.P ){
-            ret = E_OK ;
-        }
-        else if( STOP_CONDITION_NOT_DETECTED == SSPSTATbits.P ){
-            ret = E_NOT_OK ;
-        }
-        else{ /* Nothing */ }
+    else if( STOP_CONDITION_NOT_DETECTED == SSPSTATbits.P ){
+        ret = E_NOT_OK ;
     }
+    else{ /* Nothing */ }
+    
     return ret ;
 }
 
 
 
-Std_ReturnType MSSP_I2C_Master_Write_Blocking(const mssp_i2c_t * i2c_obj , uint8 i2c_data , uint8 *_ack){
+Std_ReturnType MSSP_I2C_Master_Write_Blocking(uint8 i2c_data , uint8 *_ack){
     Std_ReturnType ret = E_OK;
-    if((NULL == i2c_obj) || (NULL == _ack)){
+    
+    if(NULL == _ack){
         ret = E_NOT_OK;
     }
     else{
+        MSSP_I2C_BUS_COLL_INTERRUPT_CLEAR_FLAG();
+        /* wait until I2C is in IDLE state */
+        while ((SSPCON2 & 0x1F) || (SSPSTATbits.R_W));
         /* Write data to the Data Register */
         SSPBUF = i2c_data ;
         /* Wait the Transmission to be Completed */
@@ -258,7 +259,7 @@ Std_ReturnType MSSP_I2C_Master_Write_Blocking(const mssp_i2c_t * i2c_obj , uint8
         /* TODO: Add timeout protection to avoid infinite blocking */
         /* Clear The MSSP Interrupt Flag -> SSPIF */
         MSSP_I2C_INTERRUPT_CLEAR_FLAG();
-        
+
         /* Report The acknowledge receive from the Slave */
         if(I2C_ACK_REC_FROM_SLAVE == SSPCON2bits.ACKSTAT){
             *_ack = I2C_ACK_REC_FROM_SLAVE ;
@@ -268,18 +269,20 @@ Std_ReturnType MSSP_I2C_Master_Write_Blocking(const mssp_i2c_t * i2c_obj , uint8
         }
         ret = E_OK ;
     }
-    return ret ; 
+    
+    return ret ;
     
 }
 
-
-
-Std_ReturnType MSSP_I2C_Master_Read_Blocking(const mssp_i2c_t * i2c_obj , uint8 ack ,uint8 * i2c_data){
+Std_ReturnType MSSP_I2C_Master_Read_Blocking(uint8 ack ,uint8 * i2c_data){
     Std_ReturnType ret = E_OK;
-    if((NULL == i2c_obj) || (NULL == i2c_data)){
+
+    if(NULL == i2c_data){
         ret = E_NOT_OK;
     }
     else{
+        /* wait until I2C is in IDLE state */
+        while ((SSPCON2 & 0x1F) || (SSPSTATbits.R_W));
         /* Master Mode Receive Enable */
         I2C_MASTER_RECEIVE_ENABLE_CFG();
         /* Wait for Buffer Full Flag : A Complete Byte Received */
@@ -292,17 +295,51 @@ Std_ReturnType MSSP_I2C_Master_Read_Blocking(const mssp_i2c_t * i2c_obj , uint8 
         {
             SSPCON2bits.ACKDT = I2C_MASTER_SEND_ACK ;
             SSPCON2bits.ACKEN = I2C_MASTER_REC_ACK_START ; /* Initiates Acknowledge sequence on SDA and SCL pins and transmit ACKDT data bit. Automatically */
+            while(SSPCON2bits.ACKEN);
         }   
         else if(I2C_MASTER_SEND_NOT_ACK == ack){
             SSPCON2bits.ACKDT = I2C_MASTER_SEND_NOT_ACK ;
             SSPCON2bits.ACKEN = I2C_MASTER_REC_ACK_START ; /* Initiates Acknowledge sequence on SDA and SCL pins and transmit ACKDT data bit. Automatically */
+            while(SSPCON2bits.ACKEN);
         }
-        else { /* Nothing */ }
+        else { /* Nothing */ }    
     }
+    
     return ret ; 
     
 }
 
+Std_ReturnType MSSP_I2C_Read_Byte_Register(uint8 address, uint8 reg , uint8 * data){
+    Std_ReturnType ret = E_OK;
+    uint8 ack = ZERO_INIT;
+    
+    if(NULL == data){
+        ret = E_NOT_OK;
+    }
+    else{
+        ret = MSSP_I2C_Master_Send_Start();
+        ret &= MSSP_I2C_Master_Write_Blocking( (address << 1) , &ack);        
+        ret &= MSSP_I2C_Master_Write_Blocking(reg , &ack);
+        ret &= MSSP_I2C_Master_Send_Repeated_Start();
+        ret &= MSSP_I2C_Master_Write_Blocking( ((address << 1)|1) , &ack);
+        ret &= MSSP_I2C_Master_Read_Blocking(I2C_MASTER_SEND_NOT_ACK , data);
+        ret &= MSSP_I2C_Master_Send_Stop();
+    }
+    return ret; 
+}
+
+Std_ReturnType MSSP_I2C_Write_Byte_Register(uint8 address, uint8 reg , uint8 data){
+    Std_ReturnType ret = E_OK;
+    uint8 ack = ZERO_INIT;
+
+    ret = MSSP_I2C_Master_Send_Start();
+    ret &= MSSP_I2C_Master_Write_Blocking( (address << 1) , &ack);
+    ret &= MSSP_I2C_Master_Write_Blocking(reg , &ack);
+    ret &= MSSP_I2C_Master_Write_Blocking(data , &ack);
+    ret &= MSSP_I2C_Master_Send_Stop();
+        
+    return ret; 
+}
 
 /* Static Function Definition */
 
@@ -323,10 +360,10 @@ static void MSSP_I2C_Slave_Mode_General_Call_Configuration(const mssp_i2c_t * i2
 }
 
 static void MSSP_I2C_Slew_Rate_Configuration(const mssp_i2c_t * i2c_obj){
-    if(I2C_SLEW_RATE_ENABLE_100kHZ == i2c_obj->i2c_cfg.i2c_slew_rate){
+    if(I2C_SLEW_RATE_ENABLE_400kHZ == i2c_obj->i2c_cfg.i2c_slew_rate){
         I2C_SLEW_RATE_ENABLE_CFG();
     }
-    else if (I2C_SLEW_RATE_DISABLE_400kHZ == i2c_obj->i2c_cfg.i2c_slew_rate){
+    else if (I2C_SLEW_RATE_DISABLE_100kHZ == i2c_obj->i2c_cfg.i2c_slew_rate){
         I2C_SLEW_RATE_DISABLE_CFG();
     }
     else { /* Nothing */ }
@@ -356,11 +393,20 @@ static inline void MSSP_I2C_Master_Mode_Clock_Configuration(const mssp_i2c_t * i
  */
 void MSSP_I2C_ISR(void){
 #if                     INTERRUPT_FEATURE_ENABLE == MSSP_I2C_INTERRUPT_FEATURE_ENABLE    
-    MSSP_I2C_INTERRUPT_CLEAR_FLAG();
+    
     if(MSSP_I2C_InterruptHandler){
         MSSP_I2C_InterruptHandler();
     }    
     else{ /* Nothing */ }
+    
+    MSSP_I2C_INTERRUPT_CLEAR_FLAG();
+    
+    if(SSPCON1bits.SSPOV){
+        SSPCON1bits.SSPOV = 0;
+        if(MSSP_I2C_ReceiveOVERFLOW){
+            MSSP_I2C_ReceiveOVERFLOW();
+    }
+}
 #endif    
     
 }

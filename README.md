@@ -5,86 +5,85 @@
 ![PIC18F4620](https://img.shields.io/badge/mcu-PIC18F4620-orange)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-Bare‑metal drivers for the **PIC18F4620** microcontroller using **MPLAB X + XC8 compiler**, following a clean layered architecture (**Application → ECUAL → MCAL → Hardware**).  
-The goal is **hardware abstraction, maintainable code, separation of concerns, and reusable components** for real embedded projects.
+Bare‑metal drivers for the **PIC18F4620** microcontroller using **MPLAB X + XC8 compiler**, following a clean layered architecture 
+
+`Application → ECUAL → MCAL → Hardware`.  
+
+The repository contains **MCAL & ECUAL drivers** and **example applications** demonstrating usage of each driver, with full control over hardware abstraction and reusable components.
 
 ---
 
 ## Overview
 
-This repository contains a complete **bare-metal driver framework** for the **PIC18F4620** microcontroller using **MPLAB X IDE** and the **XC8 compiler**.
+- **MCAL (Microcontroller Abstraction Layer)**: Register-level peripheral control (GPIO, Timer, ADC, CCP, EUSART, SPI/I2C, Interrupt Manager)
+- **ECUAL (ECU Abstraction Layer)**: Easy-to-use drivers for LEDs, 7-Segment, LCD, Keypad, DC Motors, Relays
+- **Application Layer**: Main entry point (`application.c`) orchestrates demo examples using MCAL & ECUAL
 
-The project follows a clean layered architecture:
+This layered design ensures:
 
-`Application → ECUAL → MCAL → Hardware`
-
-- **MCAL** → Microcontroller Abstraction Layer (register‑level control, chip‑specific).
-- **ECUAL** → ECU Abstraction Layer (easy‑to‑use hardware components: LED, Button, LCD…).
-- **Application** → Demo code showing usage of MCAL/ECUAL drivers.
-
-All implemented drivers are documented using **Doxygen-style comments**, and API documentation is available.
-
-## 🎯 Why This Project?
-
-This project demonstrates:
-
-- Strong understanding of microcontroller architecture
-- Register-level peripheral control
-- Interrupt-driven design
-- Hardware abstraction design patterns
-- Scalable embedded firmware structure
-
-
-## Project Status
-
-### MCAL – Microcontroller Abstraction Layer
-
-All major PIC18F4620 peripherals are implemented and documented.
-
-| Peripheral 					 | Status       | Description    				   		  | 
-|--------------------------------|--------------|-----------------------------------------|
-| GPIO  	  	 				 | ✅ Complete	| Digital input/output control     	      |
-| Interrupt Manager  	 		 | ✅ Complete 	| Centralized interrupt handling          |
-| ADC  	  	 					 | ✅ Complete	| Blocking & interrupt-based conversion   |
-| Timer0 	 					 | ✅ Complete  | 8/16-bit timer support                  |
-| Timer1 	 					 | ✅ Complete  | 16-bit timer with interrupt support     |
-| Timer2 	 					 | ✅ Complete  | Timer with prescaler/postscaler         | 
-| Timer3 	 					 | ✅ Complete  | 16-bit timer module                     |
-| CCP (Capture/Compare/PWM)   	 | ✅ Complete  | Capture, Compare, and PWM modes         |
-| EUSART  	 					 | ✅ Complete  | Asynchronous & synchronous communication|
-| MSSP – SPI 	 			     | ✅ Complete  | Master/Slave SPI communication          |
-| MSSP – I2C 	 				 | ✅ Complete  | I2C Master mode support                 |
-
-All MCAL drivers:
-
-- Configurable via initialization structures
-- Support interrupt and polling modes (where applicable)
-- Follow consistent API naming conventions
-- Fully documented with Doxygen comments
-
+- Maintainable code
+- Separation of concerns
+- Easy-to-use hardware abstraction
+- Reusable examples
+ 
 ---
 
-## ✅ ECUAL – External Component Abstraction Layer
+## 🧩 Example Applications
 
-The ECUAL layer provides reusable drivers for common external hardware components built on top of the MCAL layer.
+All example applications are included in `Example_projects/` and can be enabled via macros in `application.h`:
 
-| Component        | Status       | Description 						   |
-|------------------|--------------|----------------------------------------|
-| LED              | ✅ Complete  | On / Off / Toggle control 			   |
-| 7-Segment        | ✅ Complete  | BCD and direct segment control support |
-| Character LCD    | ✅ Complete  | 4-bit and 8-bit mode support 		   |
-| Matrix Keypad    | ✅ Complete  | Row/Column scanning with debouncing    |
-| DC Motor         | ✅ Complete  | Direction and enable control  		   |
-| Relay            | ✅ Complete  | Digital control for switching loads    |
+| **Example** 					  | **Description**                      | **Drivers Used**    				   	   | **Macro in** `application.h` | 
+|---------------------------------|--------------------------------------|-----------------------------------------|------------------------------|
+| LED Blink  	  	 			  | LED patterns & toggle	             | LED, GPIO     	                       | `LED_BLINK_APP`              |
+| Character LCD  	 		      | 4-bit LCD, custom characters 	     | LCD                                     | `CHR_LCD_APP`                |
+| Matrix Keypad  	  	 		  | Key input scanning & display	     | Keypad, LCD, Timer                      | `MATRIX_KEYPAD_APP`          |
+| Seven Segment 	 			  | Display numbers or scrolling digits  | 7-Segment, Timer                        | `SEVEN_SEGMENT_APP`          |
+| Smart Home (Master + Slave MCU) | Complete system simulation           | Keypad, LCD, I2C, PWM, RTC, EEPROM, LED |  `SMART_HOME_APP`            |
 
-All ECUAL drivers:
+> Only one example runs at a time based on the `WORKING_APPLICATION` macro in `application.h`
 
-- ✔ Built on top of the MCAL layer  
-- ✔ Hardware-independent configuration  
-- ✔ Clean and reusable APIs  
-- ✔ Configurable using initialization structures  
-- ✔ Fully documented with Doxygen-style comments  
+## 🧠 Main Application (application.c)
 
+The **main function** dynamically selects the working application:
+
+```c
+#include "application.h"
+
+int main(void) {
+    application_intialize();
+
+#if SMART_HOME_APP == WORKING_APPLICATION
+    #if SMART_HOME_SLAVE_BUILD == SMART_HOME_NODE
+        slave_mcu_main_app();
+    #endif
+    #if SMART_HOME_MASTER_BUILD == SMART_HOME_NODE
+        Smart_Home_App();
+    #endif
+#endif
+
+#if MATRIX_KEYPAD_APP == WORKING_APPLICATION
+    Matrix_Keypad_Led_App();
+#endif
+
+#if SEVEN_SEGMENT_APP == WORKING_APPLICATION
+    Seven_Segment_app();
+#endif
+
+#if CHR_LCD_APP == WORKING_APPLICATION
+    Chr_LCD_app();
+#endif
+
+#if LED_BLINK_APP == WORKING_APPLICATION
+    Led_Blink_app();
+#endif
+
+    while(1) { }
+    return 0;
+}
+```
+
+- `application_initialize()` sets up all MCU peripherals and ECUAL drivers
+- Easily switch which example runs by changing macros in `application.h`
 
 ---
 
@@ -92,102 +91,38 @@ All ECUAL drivers:
 
 ### Prerequisites
 
-Before building/run:
-
 - **MPLAB X IDE** (v6.15+ recommended)
 - **XC8 compiler** (v2.40+)
 - **PIC18F4620 datasheet** (Microchip)
-- Any PIC programmer/debugger (PICkit, ICD, etc.)
+- PIC programmer/debugger (PICkit, ICD, etc.)
 
 ### Build & Flash
 
 1. Clone the repo.
 2. Open `MPLAB X` and load the project.
-3. Adjust configuration bits (config headers).
+3. Configure the macros in `application.h` for the desired example
 4. Build & program to your board.
 
 ---
-
-## 📌 Usage Example — LED Blink (in `application/application.c`)
-
-```c
-#include "application.h"
-
-led_t red_led = {
-    .port_name = PORTB_INDEX,
-    .pin = PIN0,
-    .led_status = GPIO_PIN_LOW
-};
-
-int main(void) {
-    application_initialize();
-
-    while (1) {
-        led_turn_toggle(&red_led);
-        __delay_ms(250);
-    }
-    return 0;
-}
-
-void application_initialize(void) {
-    led_initialize(&red_led);
-}
-```
-
-This simple example initializes the LED and toggles it every 250 ms using the ECUAL LED driver.
-
-
-## Documentation
-
-- Doxygen-style comments in all header files
-- Clear API descriptions
-- Parameter explanations
-- Usage examples in the Application layer
-
-## Design Principles
-
-- Bare-metal development (no RTOS)
-- Layered architecture (MCAL / ECUAL)
-- Modular and scalable structure
-- Reusable driver design
-- Clear separation between hardware and application logic
-- Embedded software best practices
-
-## Development Environment
-
-- IDE: MPLAB X
-- Compiler: XC8
-- Target MCU: PIC18F4620
-- Language: C
 
 ## Repository Structure
 
 ```text
 pic18f4620-baremetal-drivers/
 │
-├── mcal/
-│   ├── GPIO/
-│   ├── ADC/
-│   ├── Interrupt/
-│   ├── Timer0/
-│   ├── Timer1/
-│   ├── Timer2/
-│   ├── Timer3/
-│   ├── CCP/
-│   ├── EUSART/
-│   ├── I2C/
-│   └── SPI/
-│
-├── ecual/
+├── mcal/                  # Microcontroller Abstraction Layer
+├── ecual/                 # ECU Abstraction Layer
+├── Example_projects/      # Application examples
 │   ├── LED/
+│   ├── Character_LCD/
 │   ├── Matrix_Keypad/
-│   ├── Chr_LCD/
 │   ├── 7_Segment/
-│   ├── Motor/
-│   └── Relay/
-│
-│
-└── common/
+│   ├── Smart_Home/
+│   │   ├── Smart_Home_app.h/c
+│   │   └── Slave_MCU/
+├── common/                # Common headers and types
+├── application.h/c        # Main application layer
+└── README.md
 ```
 
 ## ✨ Key Features
@@ -199,11 +134,14 @@ pic18f4620-baremetal-drivers/
 - Doxygen-documented APIs
 - Reusable and scalable driver design
 
-## Future Improvements
+## 💡 Notes
 
-- Additional example applications
-- Unit testing framework
-
+- Each example includes:
+  - Source and header files
+  - Proteus simulation (where applicable)
+  - Pre-built debug files (`.cof`) for MPLAB X
+- Adjust **pins and addresses** in each header for your hardware
+- The **Smart Home example** demonstrates full master-slave I2C communication
 
 ## 👤 Author
 

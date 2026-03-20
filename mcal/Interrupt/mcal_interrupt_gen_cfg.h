@@ -20,6 +20,12 @@
  * ----------------------------------------------------
  */
 
+#define SMART_HOME_MASTER_BUILD             1
+#define SMART_HOME_SLAVE_BUILD              2
+
+#define SMART_HOME_NODE                     SMART_HOME_MASTER_BUILD
+
+
 /**
  * @brief Enable value for interrupt features
  */
@@ -37,7 +43,7 @@
  * priority levels (High / Low).
  * When disabled, all interrupts operate at the same level.
  */
-//#define INTERRUPT_PRIORITY_LEVELS_ENABLE                 INTERRUPT_FEATURE_ENABLE
+#define INTERRUPT_PRIORITY_LEVELS_ENABLE                 INTERRUPT_FEATURE_DISABLE
 
 
 /* ----------------------------------------------------
@@ -84,7 +90,7 @@
 /**
  * @brief Enable/Disable Timer2 interrupt
  */
-#define TIMER2_INTERRUPT_FEATURE_ENABLE                  INTERRUPT_FEATURE_ENABLE
+#define TIMER2_INTERRUPT_FEATURE_ENABLE                  INTERRUPT_FEATURE_DISABLE
 
 /**
  * @brief Enable/Disable Timer3 interrupt
@@ -99,12 +105,12 @@
 /**
  * @brief Enable/Disable CCP1 interrupt
  */
-#define CCP1_INTERRUPT_FEATURE_ENABLE                    INTERRUPT_FEATURE_ENABLE
+#define CCP1_INTERRUPT_FEATURE_ENABLE                    INTERRUPT_FEATURE_DISABLE
 
 /**
  * @brief Enable/Disable CCP2 interrupt
  */
-#define CCP2_INTERRUPT_FEATURE_ENABLE                    INTERRUPT_FEATURE_ENABLE
+#define CCP2_INTERRUPT_FEATURE_ENABLE                    INTERRUPT_FEATURE_DISABLE
 
 /* ----------------------------------------------------
  * EUSART Interrupt Configuration
@@ -114,12 +120,12 @@
 /**
  * @brief Enable/Disable EUSART transmit interrupt
  */
-#define EUSART_TX_INTERRUPT_FEATURE_ENABLE               INTERRUPT_FEATURE_ENABLE
+#define EUSART_TX_INTERRUPT_FEATURE_ENABLE               INTERRUPT_FEATURE_DISABLE
 
 /**
  * @brief Enable/Disable EUSART receive interrupt
  */
-#define EUSART_RX_INTERRUPT_FEATURE_ENABLE               INTERRUPT_FEATURE_ENABLE
+#define EUSART_RX_INTERRUPT_FEATURE_ENABLE               INTERRUPT_FEATURE_DISABLE
 
 /* ----------------------------------------------------
  * MSSP (SPI / I2C) Interrupt Configuration
@@ -131,15 +137,28 @@
  */
 #define MSSP_SPI_INTERRUPT_FEATURE_ENABLE                INTERRUPT_FEATURE_ENABLE
 
+#if     SMART_HOME_MASTER_BUILD == SMART_HOME_NODE 
+
+/**
+ * @brief Enable/Disable MSSP I2C interrupt
+ */
+#define MSSP_I2C_INTERRUPT_FEATURE_ENABLE                INTERRUPT_FEATURE_DISABLE
+
+#endif
+
+#if     SMART_HOME_SLAVE_BUILD == SMART_HOME_NODE 
+
 /**
  * @brief Enable/Disable MSSP I2C interrupt
  */
 #define MSSP_I2C_INTERRUPT_FEATURE_ENABLE                INTERRUPT_FEATURE_ENABLE
 
+#endif
+
 /**
  * @brief Enable/Disable MSSP I2C Bus Collision interrupt
  */
-#define MSSP_I2C_BUS_COL_INTERRUPT_FEATURE_ENABLE        INTERRUPT_FEATURE_ENABLE
+#define MSSP_I2C_BUS_COL_INTERRUPT_FEATURE_ENABLE        INTERRUPT_FEATURE_DISABLE
 
 
 #endif	/* MCAL_INTERRUPT_GEN_CFG_H */ 

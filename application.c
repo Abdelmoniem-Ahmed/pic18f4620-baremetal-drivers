@@ -14,27 +14,53 @@
 
 #include "application.h"
 
-led_t red_led = 
-{
-    .port_name = PORTB_INDEX,
-    .pin = PIN0,
-    .led_status = GPIO_PIN_LOW
-};
 
 int main() { 
     Std_ReturnType ret = E_NOT_OK;
-    application_intialize();
+    
+    application_intialize(); 
+    
+#if SMART_HOME_APP == WORKING_APPLICATION               /* @ APPLICATION_H file */ 
+    
+  #if     SMART_HOME_SLAVE_BUILD == SMART_HOME_NODE     /* @ MCAL_INTERRUPT_GEN_CFG_H file */ 
+    slave_mcu_main_app();
+  #endif
 
+  #if     SMART_HOME_MASTER_BUILD == SMART_HOME_NODE    /* @ MCAL_INTERRUPT_GEN_CFG_H file */ 
+    Smart_Home_App();
+  #endif
+    
+#endif
+    
+#if     MATRIX_KEYPAD_APP == WORKING_APPLICATION        /* @ APPLICATION_H file */ 
+    Matrix_Keypad_Led_App();
+#endif    
+    
+#if     SEVEN_SEGMENT_APP == WORKING_APPLICATION        /* @ APPLICATION_H file */ 
+    Seven_Segment_app();
+#endif      
+    
+#if     CHR_LCD_APP == WORKING_APPLICATION              /* @ APPLICATION_H file */ 
+    Chr_LCD_app();
+#endif      
+    
+#if     LED_BLINK_APP == WORKING_APPLICATION            /* @ APPLICATION_H file */  
+    Led_Blink_Hal_app();
+#endif     
+    
+#if     LED_BLINK_APP == WORKING_APPLICATION            /* @ APPLICATION_H file */ 
+    Led_Blink_app();
+#endif   
+    
     while(1){
-        led_turn_toggle(&red_led);
-        __delay_ms(250);
+        
     }
     return (EXIT_SUCCESS);
 }
 
 void application_intialize(void){
     Std_ReturnType ret = E_NOT_OK;
-    ret = led_initialize(&red_led);
-}
 
+}
+  
 

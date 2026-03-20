@@ -178,11 +178,3 @@ Embedded Systems Engineer
 [LinkedIn](https://www.linkedin.com/in/abdelmoniem-ahmed/)
 
 **Year:** 2026
-
----
-
-## Status
-
-- MCAL Interrupt Driver: Completed
-- Peripheral Drivers Documentation: In progress
-- Non-blocking Support: Enabled via callbacks

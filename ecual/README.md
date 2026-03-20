@@ -15,14 +15,17 @@ This layer abstracts low-level GPIO and MCAL handling, exposing **simple, readab
 
 ## Supported Drivers
 
-| Component        | Folder          | Description                            |
-|------------------|-----------------|----------------------------------------|
-| LED              | `LED`           | On/Off/Toggle control                  |
-| 7_Segment 	   | `7_Segment`     | BCD and direct segment control         |
-| Chr LCD          | `Chr LCD`       | HD44780-based LCD, 4-bit and 8-bit mode|
-| Matrix_Keypad    | `Matrix_Keypad` | Row/Column scanning with debouncing    |
-| Motor            | `Motor`         | Direction and enable control           |
-| Relay            | `Relay`         | Digital switching control              |
+| Component        | Folder                    | Description                               |
+|------------------|---------------------------|-------------------------------------------|
+| LED              | `LED`                     | On/Off/Toggle control                     |
+| 7_Segment 	   | `7_Segment`               | BCD and direct segment control            |
+| Chr LCD          | `Chr LCD`                 | HD44780-based LCD, 4-bit and 8-bit mode   |
+| Matrix_Keypad    | `Matrix_Keypad`           | Row/Column scanning with debouncing       |
+| Motor            | `Motor`                   | Direction and enable control              |
+| Relay            | `Relay`                   | Digital switching control                 |
+| RTC DS1307       | `RealTimeClock_DS1307`    | Real-time clock reading via I2C           |
+| EEPROM 24C02C    | `EEPROM_24C02C` 		   | Single-byte EEPROM read/write             |
+| Temp Sensor TC74 | `Temperature_Sensor_TC74` | Digital temperature read via I2C          |
 
 > All drivers are built on top of MCAL and are fully documented with **Doxygen-style comments**.
 
@@ -51,7 +54,10 @@ ECUAL/
 ├── ecu_Chr_lcd/
 ├── ecu_keypad/
 ├── ecu_DC_motor/
-└── ecu_relay/
+├── ecu_relay/
+├── RealTimeClock_DS1307/
+├── EEPROM_24C02C/
+└── Temperature_Sensor_TC74/
 ```
 
 ## Getting Started
@@ -81,13 +87,18 @@ led_initialize(&red_led);
 led_turn_toggle(&red_led);
 ```
 
+5. For I2C-based peripherals (RTC, EEPROM, TC74), ensure the MSSP I2C driver is initialized before use.
+
+---
+
 ## Design Guidelines
 
-- All ECUAL drivers depend on MCAL — no direct MCU register access.
-- Configurations are handled through structures defined in driver headers.
-- Polling-based operations for simplicity; interrupts handled at MCAL level if required.
-- Provides a clean and reusable API for application layer development.
-- Enables rapid and maintainable application development on the PIC18F4620.
+- ECUAL depends entirely on MCAL for hardware access.
+- Configuration is handled through driver-specific structures.
+- Polling-based operations ensure simplicity; interrupts are managed at MCAL level if needed.
+- Provides clean, reusable APIs for all peripherals.
+- Enables rapid and maintainable application development on PIC18F4620.
+
 
 ## 👤 Author
 

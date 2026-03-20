@@ -84,7 +84,7 @@ Std_ReturnType timer2_Deinit(const timer2_t * timer){
     }
     else{
         TIMER2_DISABLE();
-#if  TIMER1_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE
+#if  TIMER2_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE
         TIMER2_INTERRUPT_DISABLE();
 #endif        
     }
@@ -124,6 +124,7 @@ Std_ReturnType timer2_Write_Value(const timer2_t * timer , uint8 data){
  *  - Reloads Timer2 with the preloaded value to maintain precise timing
  */
 
+#if  TIMER2_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE
 void TMR2_ISR(void){
     TIMER2_INTERRUPT_CLEAR_FLAG();
     if(TMR2_InterruptHandler){
@@ -131,4 +132,4 @@ void TMR2_ISR(void){
     }
     TMR2 = timer2_preloaded ;
 }
-
+#endif

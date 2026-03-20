@@ -1,17 +1,15 @@
 /**
- * @file ecu_layer_init.h
- * @brief GPIO HAL driver interface for PIC18F microcontrollers
+ * @file ecu_layer_init.c
+ * @brief ECUAL layer initialization implementation
  *
  * @details
- * This module provides high-level APIs for configuring and controlling
- * GPIO pins and ports using register-level access.
+ * Initializes all high-level ECU modules for your project.
  *
  * Layer: ECUAL
- * Target: PIC18F
+ * Target: PIC18F4620
  *
- * @author Abdelmoniem Ahmed
- * @linkedin -> https://www.linkedin.com/in/abdelmoniem-ahmed/ <-
- * @date 2026
+ * @Author: Abdelmoniem Ahmed
+ * @LinkedIn: https://www.linkedin.com/in/abdelmoniem-ahmed/
  */
 
 #include "ecu_layer_init.h"

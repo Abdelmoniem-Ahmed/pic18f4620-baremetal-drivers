@@ -19,12 +19,18 @@
 /* Section: Static Function Pointers for Interrupts */
 #if   EUSART_TX_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
    static void (* EUSART_TX_InterruptHandler)(void) = NULL ;
+   static uint16 char_counter = ZERO_INIT;
+   static uint8 Tx_buffer[500] = {0} ;
+   static uint8 write_string_flag = ZERO_INIT;
+   static uint16 str_length_int = ZERO_INIT;
+   
 #endif
     
 #if   EUSART_RX_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE 
     static void (* EUSART_RX_InterruptHandler)(void) = NULL ;   
     static void (* EUSART_FERR_InterruptHandler)(void) = NULL ;
     static void (* EUSART_OERR_InterruptHandler)(void) = NULL ;
+    uint8 *l_data = ZERO_INIT;
 #endif
 
 
@@ -108,13 +114,14 @@ Std_ReturnType EUSART_ASYNC_Read_Byte_Blocking(uint8 *_data){
     
     return ret ;
 }
-
+#if     INTERRUPT_FEATURE_ENABLE == EUSART_RX_INTERRUPT_FEATURE_ENABLE
 Std_ReturnType EUSART_ASYNC_Read_Byte_NonBlocking(uint8 *_data){
-     Std_ReturnType ret = E_OK ;
+    Std_ReturnType ret = E_OK ;
     if(NULL == _data){
         ret = E_NOT_OK;
     }
     else{
+        l_data = _data;
         if(1 == PIR1bits.RCIF){
            *_data = RCREG ; 
         }
@@ -122,11 +129,11 @@ Std_ReturnType EUSART_ASYNC_Read_Byte_NonBlocking(uint8 *_data){
     }
     return ret ;
 }
-
+#endif
 
 Std_ReturnType EUSART_ASYNC_Write_Byte_Blocking( uint8 _data){
     Std_ReturnType ret = E_OK ;
-        while(!(TXSTAbits.TRMT));
+        while(!(PIR1bits.TXIF));
 #if   EUSART_TX_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE         
         EUSART_TX_INTERRUPT_ENABLE();
 #endif        
@@ -146,13 +153,17 @@ Std_ReturnType EUSART_ASYNC_Write_String_Blocking(uint8 *_data , uint16 str_leng
     return ret;
 }
 
+#if     INTERRUPT_FEATURE_ENABLE == EUSART_TX_INTERRUPT_FEATURE_ENABLE
 Std_ReturnType EUSART_ASYNC_Write_Byte_NonBlocking(uint8 _data){
         Std_ReturnType ret = E_OK ;
-        if(TXSTAbits.TRMT){
-#if   EUSART_TX_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE         
+        if(PIR1bits.TXIF){
+            
             EUSART_TX_INTERRUPT_ENABLE();
-#endif        
+            
             TXREG = _data ;
+        }
+        else{
+            ret = E_NOT_OK;
         }
         
     return ret ;
@@ -160,14 +171,23 @@ Std_ReturnType EUSART_ASYNC_Write_Byte_NonBlocking(uint8 _data){
 
 Std_ReturnType EUSART_ASYNC_Write_String_NonBlocking(uint8 *_data , uint16 str_length){
     Std_ReturnType ret = E_OK ;
-    uint16 char_counter = ZERO_INIT;
     
-    for(char_counter = ZERO_INIT ; char_counter < str_length ; char_counter++ ){
-        ret = EUSART_ASYNC_Write_Byte_NonBlocking(_data[char_counter]);
+    if((0 == write_string_flag) && (sizeof(Tx_buffer) >= str_length) && ( NULL != _data)){
+        for(char_counter = ZERO_INIT ; char_counter < str_length ; char_counter++){
+            Tx_buffer[char_counter] = _data[char_counter];
+        }
+        write_string_flag = 1;
+        char_counter = 0;
+        str_length_int = str_length ;
+        EUSART_ASYNC_Write_Byte_NonBlocking(Tx_buffer[char_counter]);
+    }
+    else{
+        ret = E_NOT_OK;
     }
     
     return ret;
 }
+#endif
 
 static void usart_baudrate_calculation(usart_t * _usart_obj ){
     float baudrate_temp = 0 ;
@@ -239,7 +259,9 @@ static void EUSART_ASYNC_TX_Init(usart_t * _usart_obj){
 #endif            
         }
         else if(EUSART_ASYNCHRONOUS_INTERRUPT_TX_DISABLE == _usart_obj->usart_tx_cfg.usart_tx_interrupt_enable){
+#if     INTERRUPT_FEATURE_ENABLE == EUSART_TX_INTERRUPT_FEATURE_ENABLE            
             EUSART_TX_INTERRUPT_DISABLE();
+#endif            
         }
         else{  /* Nothing */  }
         /* EUSART 9-BIT Transmit Configuration */
@@ -281,7 +303,9 @@ static void EUSART_ASYNC_RX_Init(usart_t * _usart_obj){
 #endif            
         }
         else if(EUSART_ASYNCHRONOUS_INTERRUPT_RX_DISABLE == _usart_obj->usart_rx_cfg.usart_rx_interrupt_enable){
+#if     INTERRUPT_FEATURE_ENABLE == EUSART_RX_INTERRUPT_FEATURE_ENABLE            
             EUSART_RX_INTERRUPT_DISABLE();
+#endif            
         }
         else{  /* Nothing */  }
         /* EUSART 9-BIT Receiver Configuration */
@@ -298,18 +322,36 @@ static void EUSART_ASYNC_RX_Init(usart_t * _usart_obj){
 
 /* Section: Interrupt Service Routines */
 
+#if   EUSART_TX_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE
 /**
  * @brief EUSART Transmit ISR
  *
  * Handles TX interrupt and calls the user-defined callback if assigned.
  */
 void EUSART_TX_ISR(void){
-    EUSART_TX_INTERRUPT_DISABLE();
+    
     if(EUSART_TX_InterruptHandler){
         EUSART_TX_InterruptHandler();
     }else{ /* Nothing */ }
+    if(1 == write_string_flag){
+        char_counter++;
+        if(char_counter < str_length_int){
+            EUSART_ASYNC_Write_Byte_NonBlocking(Tx_buffer[char_counter]);
+        }
+        else{
+            write_string_flag = 0;
+            char_counter = 0;
+            str_length_int = 0;
+            EUSART_TX_INTERRUPT_DISABLE();
+        }
+    }
+    else{
+        EUSART_TX_INTERRUPT_DISABLE();
+    }
 }
+#endif
 
+#if   EUSART_RX_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE
 /**
  * @brief EUSART Receive ISR
  *
@@ -318,6 +360,7 @@ void EUSART_TX_ISR(void){
  */
 void EUSART_RX_ISR(void){
     if(EUSART_RX_InterruptHandler){
+        *l_data = RCREG ; 
         EUSART_RX_InterruptHandler();
     }else{ /* Nothing */ }
     if(EUSART_FERR_InterruptHandler){
@@ -327,4 +370,4 @@ void EUSART_RX_ISR(void){
         EUSART_OERR_InterruptHandler();
     }else{ /* Nothing */ }
 }
-
+#endif

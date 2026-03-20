@@ -151,10 +151,16 @@ typedef struct{
     usart_tx_cfg_t usart_tx_cfg ;
     usart_rx_cfg_t usart_rx_cfg ;
     usart_error_status_t error_status ;
+#if     INTERRUPT_FEATURE_ENABLE == EUSART_TX_INTERRUPT_FEATURE_ENABLE    
     void (* EUSART_TX_DefaultInterruptHandler)(void);
+#endif
+#if     INTERRUPT_FEATURE_ENABLE == EUSART_RX_INTERRUPT_FEATURE_ENABLE         
     void (* EUSART_RX_DefaultInterruptHandler)(void);
+#endif
+#if     (INTERRUPT_FEATURE_ENABLE == EUSART_RX_INTERRUPT_FEATURE_ENABLE) 
     void (* EUSART_FERR_DefaultInterruptHandler)(void);
     void (* EUSART_OERR_DefaultInterruptHandler)(void);
+#endif
 }usart_t;
 
 /* Section : Function Declarations */
@@ -214,7 +220,9 @@ Std_ReturnType EUSART_ASYNC_Read_Byte_Blocking(uint8 *_data);
  * - E_OK: Byte successfully received
  * - E_NOT_OK: No data available or error occurred
  */
+#if     INTERRUPT_FEATURE_ENABLE == EUSART_RX_INTERRUPT_FEATURE_ENABLE 
 Std_ReturnType EUSART_ASYNC_Read_Byte_NonBlocking(uint8 *_data);
+#endif
 
 /**
  * @brief Writes a single byte to the EUSART in blocking mode.
@@ -256,7 +264,9 @@ Std_ReturnType EUSART_ASYNC_Write_String_Blocking(uint8 *_data , uint16 str_leng
  * - E_OK: Byte successfully transmitted
  * - E_NOT_OK: Transmitter not ready
  */
+#if     INTERRUPT_FEATURE_ENABLE == EUSART_TX_INTERRUPT_FEATURE_ENABLE
 Std_ReturnType EUSART_ASYNC_Write_Byte_NonBlocking(uint8 _data);
+#endif
 
 /**
  * @brief Writes a string of bytes to the EUSART in non-blocking mode.
@@ -271,7 +281,9 @@ Std_ReturnType EUSART_ASYNC_Write_Byte_NonBlocking(uint8 _data);
  * - E_OK: String successfully transmitted
  * - E_NOT_OK: Transmission failed due to busy transmitter
  */
+#if     INTERRUPT_FEATURE_ENABLE == EUSART_TX_INTERRUPT_FEATURE_ENABLE
 Std_ReturnType EUSART_ASYNC_Write_String_NonBlocking(uint8 *_data , uint16 str_length);
+#endif
 
 
 #endif	/* HAL_EUSART_H */

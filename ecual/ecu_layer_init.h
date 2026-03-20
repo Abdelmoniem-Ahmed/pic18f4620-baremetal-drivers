@@ -1,18 +1,18 @@
 /**
  * @file ecu_layer_init.h
- * @brief GPIO HAL driver interface for PIC18F microcontrollers
+ * @brief ECUAL layer initialization for PIC18F microcontrollers
  *
  * @details
- * This module provides high-level APIs for configuring and controlling
- * GPIO pins and ports using register-level access.
+ * This module provides a high-level interface to initialize all
+ * ECUAL drivers for your project, including LEDs, 7-segment, LCD,
+ * keypad, motors, relays, RTC, EEPROM, and temperature sensors.
  *
  * Layer: ECUAL
- * Target: PIC18F
+ * Target: PIC18F4620
  *
  * @author Abdelmoniem Ahmed
  * @linkedin -> https://www.linkedin.com/in/abdelmoniem-ahmed/ <-
- * @date 2026
- */
+ *  */
 
 #ifndef ECU_LAYER_INIT_H
 #define	ECU_LAYER_INIT_H
@@ -25,6 +25,9 @@
 #include"Matrix_Keypad/ecu_keypad.h"
 #include"Motor/ecu_DC_motor.h"
 #include"Relay/ecu_relay.h"
+#include"RealTimeClock_DS1307/RealTimeClock_DS1307.h"
+#include"EEPROM_24C02C/EEPROM_24C02C.h"
+#include"Temperature_Sensor_TC74/Temperature_Sensor_TC74.h"
 
 /* Section : Macro Declaration */
 
@@ -35,10 +38,11 @@
 /* Section : Function Declarations */
 
 /**
- * @brief Initialize the ECUAL layer.
+ * @brief Initialize all ECUAL layer modules
  *
- * This function is responsible for initializing
- * all ECU layer modules 
+ * @details
+ * This function initializes all peripherals in the ECUAL layer.
+ * Call this once at system startup.
  */
 void initialize_ecu_layer(void);
 

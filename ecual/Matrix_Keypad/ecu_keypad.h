@@ -24,12 +24,21 @@
 
 /* Section : Macro Declaration */
 
-#define KEYPAD_COLUMN 4         /**< Number of keypad rows */
-#define KEYPAD_ROW 4            /**< Number of keypad columns */
+#define KEYPAD_COLUMN 4         /**< Number of keypad columns */
+#define KEYPAD_ROW 4            /**< Number of keypad rows */
+
+#define NO_KEY              0xFF
+#define THRESHOLD_VAL       0x08
 
 /* Section : Macro Functions Declarations */
 
 /* Section : Data Types Declarations */
+
+typedef enum {
+    IDLE_STATE,
+    DEBOUNCE_STATE,
+    PRESSED_STATE
+}Keypad_State_t;
 
 /**
  * @struct keypad_t
@@ -59,7 +68,8 @@ typedef struct{
 Std_ReturnType keypad_initialize(const keypad_t * keypad_obj);
 
 /**
- * @brief Scan keypad and return pressed key
+ * @brief Scan keypad and return stable pressed key
+ *        MUST BE CALLED EVERY 10 ms   
  * 
  * @param keypad_obj Pointer to keypad configuration
  * @param value Pointer to store the detected key
@@ -70,7 +80,7 @@ Std_ReturnType keypad_initialize(const keypad_t * keypad_obj);
  *
  * @note If multiple keys are pressed simultaneously, the last detected key in scan order is returned.
  */
-Std_ReturnType keypad_get_value(const keypad_t * keypad_obj , uint8 * value );
+Std_ReturnType Keypad_Update(const keypad_t * keypad_obj ,uint8 * value);
 
 #endif	/* ECU_KEYPAD_H */
 

@@ -31,7 +31,7 @@
  * Holds the port, pin, and current logic level of an LED.
  * - port_name : Port of the LED (0-5)
  * - pin       : Pin of the LED (0-7)
- * - led_status: Current logic state (0=LOW, 1=HIGH)
+ * - led_status: Current logic state (0=GPIO_PIN_LOW, 1=GPIO_PIN_HIGH)
  */
 typedef struct {
     uint8 port_name   : 4 ;

@@ -46,7 +46,7 @@
  *  - CCP_CFG_COMPARE_MODE_SELECTED
  *  - CCP_CFG_PWM_MODE_SELECTED
  */
-#define CCP2_CFG_SELECTED_MODE           (CCP_CFG_CAPTURE_MODE_SELECTED)
+#define CCP2_CFG_SELECTED_MODE           (CCP_CFG_PWM_MODE_SELECTED)
 
 
 /* Section : Macro Functions Declarations */

@@ -44,6 +44,9 @@ typedef uint8 Std_ReturnType ;
 
 #define ZERO_INIT 0x00
 
+#define TRUE            0x01
+#define FALSE           0x00
+
 /* Section : Function Declarations */
 
 

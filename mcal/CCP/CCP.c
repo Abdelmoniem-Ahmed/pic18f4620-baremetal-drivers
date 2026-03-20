@@ -183,13 +183,15 @@ Std_ReturnType CCP_Init(const ccp_t * _ccp_obj){
             ret = E_NOT_OK;
         }
         /* Interrupt Configuration */
-#if (CCP1_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE) || (CCP2_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE)
+#if (CCP1_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE)
         if(CCP1_INST == _ccp_obj->ccp_inst){
             CCP1_INTERRUPT_ENABLE();
             CCP1_INTERRUPT_CLEAR_FLAG();
             CCP1_InterruptHandler = _ccp_obj->CCP_InterruptHandler;
         }
-        else{
+#endif        
+#if (CCP2_INTERRUPT_FEATURE_ENABLE == INTERRUPT_FEATURE_ENABLE)        
+        if(CCP2_INST == _ccp_obj->ccp_inst){
             CCP2_INTERRUPT_ENABLE();
             CCP2_INTERRUPT_CLEAR_FLAG();
             CCP2_InterruptHandler = _ccp_obj->CCP_InterruptHandler;
