@@ -1,5 +1,10 @@
 # PIC18F4620 Bare‑Metal Drivers (MCAL + ECUAL)
 
+![C](https://img.shields.io/badge/language-C-blue)
+![XC8](https://img.shields.io/badge/compiler-XC8-green)
+![PIC18F4620](https://img.shields.io/badge/mcu-PIC18F4620-orange)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+
 ## 🎥 Project Demo
 
 [![Driver Demo](https://img.youtube.com/vi/RqG13C6xlhg/0.jpg)](https://youtu.be/RqG13C6xlhg)
@@ -13,10 +18,7 @@ This demo demonstrates:
 - Timer-based scheduling
 - Modular MCAL/ECUAL integration
 
-![C](https://img.shields.io/badge/language-C-blue)
-![XC8](https://img.shields.io/badge/compiler-XC8-green)
-![PIC18F4620](https://img.shields.io/badge/mcu-PIC18F4620-orange)
-![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+
 
 Bare‑metal drivers for the **PIC18F4620** microcontroller using **MPLAB X + XC8 compiler**, following a clean layered architecture 
 

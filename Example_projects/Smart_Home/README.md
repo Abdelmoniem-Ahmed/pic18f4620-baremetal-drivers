@@ -1,5 +1,9 @@
 # Smart Home Master MCU – PIC18F4620
 
+![C](https://img.shields.io/badge/language-C-blue)
+![ECUAL](https://img.shields.io/badge/layer-ECUAL-yellow)
+![MCU](https://img.shields.io/badge/mcu-PIC18F4620-orange)
+
 > 🚀 A complete embedded systems project demonstrating real-time control, communication, and data logging using PIC18F4620.
 
 <p align="center">
@@ -24,10 +28,6 @@ This demo showcases:
 A short overview of the system features:
 
 👉 https://youtu.be/RqG13C6xlhg
-
-![C](https://img.shields.io/badge/language-C-blue)
-![ECUAL](https://img.shields.io/badge/layer-ECUAL-yellow)
-![MCU](https://img.shields.io/badge/mcu-PIC18F4620-orange)
 
 This project demonstrates a **Smart Home System Master MCU** using a PIC18F4620. 
 It simulates a **distributed embedded system** with real-time communication between multiple microcontrollers. 
