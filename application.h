@@ -74,7 +74,7 @@
  * all application-level modules and ECU layers
  * before entering the main execution loop.
  */
-void application_intialize(void);
+void application_initialize(void);
 
 #endif	/* APPLICATION_H */
 

@@ -18,7 +18,7 @@
 int main() { 
     Std_ReturnType ret = E_NOT_OK;
     
-    application_intialize(); 
+    application_initialize(); 
     
 #if SMART_HOME_APP == WORKING_APPLICATION               /* @ APPLICATION_H file */ 
     
@@ -58,7 +58,7 @@ int main() {
     return (EXIT_SUCCESS);
 }
 
-void application_intialize(void){
+void application_initialize(void){
     Std_ReturnType ret = E_NOT_OK;
 
 }

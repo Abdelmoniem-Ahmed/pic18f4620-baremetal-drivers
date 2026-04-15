@@ -6,10 +6,24 @@
   <img src="media/smart_home_project.gif" width="600">
 </p>
 
-## 🎥 Demo
+## 🎥 Project Demo
 
-- 📹 Full Demo: [Watch Video](media/smart_home_full_demo.mp4)
-- ⚡ Short Demo: [Watch Video](media/smart_home_short_demo.mp4)
+### 🔹 Full System Demonstration
+Watch the complete working demo of the Smart Home system:
+
+👉 https://youtu.be/3Z4p8v9G4Ns
+
+This demo showcases:
+- Real-time temperature monitoring and display
+- Password-protected system with lockout mechanism
+- Master-Slave communication over I2C
+- EEPROM logging and UART debugging
+- Automated fan control via Slave MCU
+
+### 🔹 Quick Overview (LinkedIn Version)
+A short overview of the system features:
+
+👉 https://youtu.be/RqG13C6xlhg
 
 ![C](https://img.shields.io/badge/language-C-blue)
 ![ECUAL](https://img.shields.io/badge/layer-ECUAL-yellow)

@@ -1,5 +1,18 @@
 # PIC18F4620 Bare‑Metal Drivers (MCAL + ECUAL)
 
+## 🎥 Project Demo
+
+[![Driver Demo](https://img.youtube.com/vi/RqG13C6xlhg/0.jpg)](https://youtu.be/RqG13C6xlhg)
+
+👉 https://youtu.be/RqG13C6xlhg
+
+This demo demonstrates:
+- LCD driver (4-bit mode)
+- Keypad input handling
+- I2C communication
+- Timer-based scheduling
+- Modular MCAL/ECUAL integration
+
 ![C](https://img.shields.io/badge/language-C-blue)
 ![XC8](https://img.shields.io/badge/compiler-XC8-green)
 ![PIC18F4620](https://img.shields.io/badge/mcu-PIC18F4620-orange)
